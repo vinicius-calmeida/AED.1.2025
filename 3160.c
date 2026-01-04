@@ -12,7 +12,6 @@ void adicionarAmigo(Amigos **listaAmigos, char *nomeAmigo) {
     Amigos *amigoAtual = *listaAmigos;
 
     strncpy(novoAmigo->nome, nomeAmigo, sizeof(novoAmigo->nome) - 1);
-    novoAmigo->nome[sizeof(novoAmigo->nome) - 1] = '\0';
     novoAmigo->prox = NULL;
 
     while(amigoAtual->prox != NULL) {
