@@ -1,40 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TRUE 1
-#define FALSE 0
-
 typedef struct {
 	int source, destination, weight;
 } Edge;
 
 Edge graph[250];
 int parent[70];
-
-int compare_edges(Edge *, Edge *);
-
-int find_component(int);
-
-int kruskal(int);
-
-int main(int argc, char **argv)
-{
-	int routers, edges, i;
-
-	scanf("%d %d", &routers, &edges);
-
-	for (i = 0; i < edges; ++i)
-		scanf("%d %d %d", &graph[i].source, &graph[i].destination, &graph[i].weight);
-
-	qsort(graph, edges, sizeof(Edge), compare_edges);
-
-	for (i = 1; i <= routers; ++i)
-		parent[i] = i;
-
-	printf("%d\n", kruskal(edges));
-
-	return 0;
-}
 
 int compare_edges(Edge *a, Edge *b)
 {
@@ -66,4 +38,22 @@ int kruskal(int edges)
 	}
 
 	return total_cost;
+}
+int main()
+{
+	int routers, edges, i;
+
+	scanf("%d %d", &routers, &edges);
+
+	for (i = 0; i < edges; ++i)
+		scanf("%d %d %d", &graph[i].source, &graph[i].destination, &graph[i].weight);
+
+	qsort(graph, edges, sizeof(Edge), compare_edges);
+
+	for (i = 1; i <= routers; ++i)
+		parent[i] = i;
+
+	printf("%d\n", kruskal(edges));
+
+	return 0;
 }
