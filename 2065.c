@@ -7,7 +7,6 @@ int main()
 {
 	int i, n, m;
 	
-	
 	scanf("%d", &n);
 	int a[n];
 	scanf("%d", &m);
@@ -17,7 +16,6 @@ int main()
 
 	for(i = 0; i < m; i++)
 		scanf("%d", &b[i]);
-	
 		
 	int temp[n];
 	int t =0;
