@@ -1,128 +1,88 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-typedef struct s{
-
-	char nome[20];
-	unsigned qtsMortes;
-
-} Assassinos;
-
-struct Hall{
-	Assassinos dado;
-	struct Hall *esquerdo;
-	struct Hall *direito;
-
+struct Assassino {
+    char nome[11];
+    int qtd;
+    struct Assassino *esq;
+    struct Assassino *dir;
 };
 
-struct Mortos{
+struct Assassino *insere(struct Assassino *no, char nome[]) {
+    if (no == NULL) {
+        struct Assassino *novo = malloc(sizeof(struct Assassino));
+        strcpy(novo->nome, nome);
+        novo->qtd = 1;
+        novo->esq = novo->dir = NULL;
+        return novo;
+    }
+    
+    if (strcmp(nome, no->nome) < 0) {
+        no->esq = insere(no->esq, nome);
+    } else if (strcmp(nome, no->nome) > 0) {
+        no->dir = insere(no->dir, nome);
+    } else {
+        no->qtd++;
+    }
+    return no;
+}
 
-	char morto[20];
-	struct Mortos *esquerdo;
-	struct Mortos *direito;
-
+struct Morto {
+    char nome[11];
+    struct Morto *esq;
+    struct Morto *dir;
 };
 
-typedef struct Hall Hall;
-typedef struct Mortos Mortos;
-
-Hall* insereAssassinos(Hall *, Assassinos);
-Mortos* insereMortos(Mortos *, char *);
-bool busca(Mortos *mortos, char *chave);
-void imprime(Hall *, Mortos *);
-
-void main ()
-{
-
-	char matou[20], morreu[20];
-	Hall *hall = NULL;
-	Mortos *mortos = NULL;
-
-	while (scanf(" %s %s", matou, morreu) != EOF)
-	{
-
-		Assassinos assassino = { 0 };
-		strcpy(assassino.nome, matou);
-		hall = insereAssassinos(hall, assassino);
-		mortos = insereMortos(mortos, morreu);
-
-	}
-
-	printf("HALL OF MURDERERS\n");
-	imprime(hall, mortos);
-
+struct Morto *insere_morto(struct Morto *no, char nome[]) {
+    if (no == NULL) {
+        struct Morto *novo = malloc(sizeof(struct Morto));
+        strcpy(novo->nome, nome);
+        novo->esq = novo->dir = NULL;
+        return novo;
+    }
+    
+    if (strcmp(nome, no->nome) < 0) {
+        no->esq = insere_morto(no->esq, nome);
+    } else if (strcmp(nome, no->nome) > 0) {
+        no->dir = insere_morto(no->dir, nome);
+    }
+    return no;
 }
 
-Hall* insereAssassinos(Hall *hall, Assassinos assassino)
-{
-
-	if (!hall)
-	{
-
-		hall = (Hall *) malloc(sizeof(Hall));
-		hall->dado = assassino;
-		hall->dado.qtsMortes++;
-		hall->esquerdo = hall->direito = NULL;
-
-	}
-	else if (strcmp(hall->dado.nome, assassino.nome) > 0)
-		hall->esquerdo = insereAssassinos(hall->esquerdo, assassino);
-	else if (strcmp(hall->dado.nome, assassino.nome) < 0)
-		hall->direito = insereAssassinos(hall->direito, assassino);
-	else
-		hall->dado.qtsMortes++;
-
-	return hall;
-
+int busca_morto(struct Morto *no, char nome[]) {
+    if (no == NULL) return 0;
+    if (strcmp(nome, no->nome) == 0) return 1;
+    if (strcmp(nome, no->nome) < 0) {
+        return busca_morto(no->esq, nome);
+    }
+    return busca_morto(no->dir, nome);
 }
 
-Mortos* insereMortos(Mortos *mortos, char *morto)
-{
-
-	if (!mortos)
-	{
-
-		mortos = (Mortos *) malloc(sizeof(Mortos));
-		strcpy(mortos->morto, morto);
-		mortos->esquerdo = mortos->direito = NULL;
-
-	}
-	else if (strcmp(mortos->morto, morto) > 0)
-		mortos->esquerdo = insereMortos(mortos->esquerdo, morto);
-	else
-		mortos->direito = insereMortos(mortos->direito, morto);
-
-	return mortos;
-
+void imprime(struct Assassino *no, struct Morto *mortos) {
+    if (no != NULL) {
+        imprime(no->esq, mortos);
+        
+        if (no->qtd > 0 && busca_morto(mortos, no->nome) == 0) {
+            printf("%s %d\n", no->nome, no->qtd);
+        }
+        
+        imprime(no->dir, mortos);
+    }
 }
 
-void imprime(Hall *hall, Mortos *mortos)
-{
-
-	if (hall != NULL)
-	{
-		imprime(hall->esquerdo, mortos);
-		if (!busca(mortos, hall->dado.nome))
-			printf("%s %u\n", hall->dado.nome, hall->dado.qtsMortes);
-		imprime(hall->direito, mortos);
-	}
-}
-bool busca(Mortos *mortos, char *chave)
-{
-
-	bool direita, esquerda;
-
-	if (!mortos)
-		return false;
-
-	if (strcmp(mortos->morto, chave) == 0)
-		return true;
-
-	if (strcmp(mortos->morto, chave) > 0)
-		esquerda = busca(mortos->esquerdo, chave);
-	else
-		direita = busca(mortos->direito, chave);
-
+int main() {
+    char matador[11], vitima[11];
+    struct Assassino *hall = NULL;
+    struct Morto *lista_mortos = NULL;
+    
+    while (scanf("%s %s", matador, vitima) == 2) {
+        hall = insere(hall, matador);
+        lista_mortos = insere_morto(lista_mortos, vitima);
+    }
+    
+    printf("HALL OF MURDERERS\n");
+    imprime(hall, lista_mortos);
+    
+    return 0;
 }
