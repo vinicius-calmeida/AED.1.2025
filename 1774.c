@@ -2,42 +2,41 @@
 #include <stdlib.h>
 
 typedef struct {
-	int source, destination, weight;
+	int source, destination, peso;
 } Edge;
 
-Edge graph[250];
-int parent[70];
+Edge grafo[250];
+int pais[70];
 
-int compare_edges(Edge *a, Edge *b)
+int comparar_edges(Edge *a, Edge *b)
 {
-	return a->weight - b->weight;
+	return a->peso - b->peso;
 }
 
-int find_component(int i)
+int encontrar_component(int i)
 {
-	if (i == parent[i])
+	if (i == pais[i])
 		return i;
-	return find_component(parent[i]);
+	return encontrar_component(pais[i]);
 }
 
 int kruskal(int edges)
 {
-	int i, total_cost, component_v, component_u;
-	total_cost = 0;
-
+	int i, custoTot, componente_v, componente_u;
+	custoTot = 0;
 	for (i = 0; i < edges; ++i)
 	{
-		component_v = find_component(graph[i].source);
-		component_u = find_component(graph[i].destination);
+		componente_v = encontrar_component(grafo[i].source);
+		componente_u = encontrar_component(grafo[i].destination);
 
-		if (component_v != component_u)
+		if (componente_v != componente_u)
 		{
-			parent[component_v] = parent[component_u];
-			total_cost += graph[i].weight;
+			pais[componente_v] = pais[componente_u];
+			custoTot += grafo[i].peso;
 		}
 	}
 
-	return total_cost;
+	return custoTot;
 }
 int main()
 {
@@ -46,12 +45,12 @@ int main()
 	scanf("%d %d", &routers, &edges);
 
 	for (i = 0; i < edges; ++i)
-		scanf("%d %d %d", &graph[i].source, &graph[i].destination, &graph[i].weight);
+		scanf("%d %d %d", &grafo[i].source, &grafo[i].destination, &grafo[i].peso);
 
-	qsort(graph, edges, sizeof(Edge), compare_edges);
+	qsort(grafo, edges, sizeof(Edge), comparar_edges);
 
 	for (i = 1; i <= routers; ++i)
-		parent[i] = i;
+		pais[i] = i;
 
 	printf("%d\n", kruskal(edges));
 
