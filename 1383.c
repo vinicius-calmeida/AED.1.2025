@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int verificarLinha(int sudoku[9][9]) {
+int verifLinha(int sudoku[9][9]) {
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++) {
             int existe[10] = {0};
@@ -13,7 +14,7 @@ int verificarLinha(int sudoku[9][9]) {
     return 1;
 }
 
-int verificarColuna(int sudoku[9][9]) {
+int verifColun(int sudoku[9][9]) {
     for (int j = 0; j < 9; j++) {
         int existe[10] = {0};
         for (int i = 0; i < 9; i++) {
@@ -26,7 +27,7 @@ int verificarColuna(int sudoku[9][9]) {
     return 1;
 }
 
-int verificarBloco(int sudoku[9][9]) {
+int verifbloco(int sudoku[9][9]) {
     for (int blocoI = 0; blocoI < 9; blocoI += 3) {
         for (int blocoJ = 0; blocoJ < 9; blocoJ += 3) {
             int existe[10] = {0};
@@ -44,24 +45,24 @@ int verificarBloco(int sudoku[9][9]) {
 }
 
 int main() {
-    int numeroMatrizes, sudoku[9][9];
-    scanf("%d", &numeroMatrizes);
-    int verifica[numeroMatrizes];
+    int numMatriz, sudoku[9][9];
+    scanf("%d", &numMatriz);
+    int verifica[numMatriz];
 
-    for (int k = 0; k < numeroMatrizes; k++) {
+    for (int k = 0; k < numMatriz; k++) {
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++) {
                     scanf("%d", &sudoku[i][j]);
             }
         }
-        if (verificarLinha(sudoku) && verificarColuna(sudoku) && verificarBloco(sudoku)){
+        if (verifLinha(sudoku) && verifColun(sudoku) && verifbloco(sudoku)){
             verifica[k] = 1;
         } else {
             verifica[k] = 0;
         }
     }
-    for (int k = 0; k < numeroMatrizes; k++)
+    for (int k = 0; k < numMatriz; k++)
     {
         printf("Instancia %d\n", k + 1);
         printf("%s\n\n", verifica[k] == 1 ? "SIM" : "NAO");
