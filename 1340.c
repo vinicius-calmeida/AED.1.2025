@@ -19,18 +19,64 @@ typedef struct{
     int tamanho;
 } prioridade;
 
-void iniciapilha(pilha*s);
-int pilhavazia(pilha* s);
-void pushpilha(pilha*s,int x);
-int poppilha(pilha*s);
-void iniciafila(fila*q);
-int filavazia(fila*q);
-void pushfila(fila*q,int x);
-int popfila(fila* q);
-void iniciafp(prioridade*fp);
-int fpvazia(prioridade*fp);
-void pushfp(prioridade*fp,int x);
-int popfp(prioridade*fp);
+void iniciapilha(pilha*s){
+    s->topo=-1;
+}
+
+int pilhavazia(pilha* s){
+    return s->topo==-1;
+}
+
+void pushpilha(pilha*s,int x){
+    s->arr[++(s->topo)]=x;
+}
+
+int poppilha(pilha*s){
+    return s->arr[(s->topo)--];
+}
+
+void iniciafila(fila*q){
+    q->comeco=q->fim=0;
+}
+
+int filavazia(fila*q){
+    return q->comeco==q->fim;
+}
+
+void pushfila(fila*q,int x){
+    q->arr[q->fim++]=x;
+}
+
+int popfila(fila* q){
+    return q->arr[q->comeco++];
+}
+
+void iniciafp(prioridade*fp){
+    fp->tamanho=0;
+}
+
+int fpvazia(prioridade*fp){
+    return fp->tamanho==0;
+}
+
+void pushfp(prioridade*fp,int x){
+    fp->arr[fp->tamanho++]=x;
+}
+
+int popfp(prioridade*fp){
+    int max=0;
+    for (int i=1;i<fp->tamanho;i++){
+        if (fp->arr[i]>fp->arr[max]){
+            max=i;
+        }
+    }
+    int val=fp->arr[max];
+    for (int i=max;i<fp->tamanho-1;i++){
+        fp->arr[i]=fp->arr[i+1];
+    }
+    fp->tamanho--;
+    return val;
+}
 
 int main(){
     int n;
@@ -95,63 +141,4 @@ int main(){
         }
     }
     return 0;
-}
-
-void iniciapilha(pilha*s){
-    s->topo=-1;
-}
-
-int pilhavazia(pilha* s){
-    return s->topo==-1;
-}
-
-void pushpilha(pilha*s,int x){
-    s->arr[++(s->topo)]=x;
-}
-
-int poppilha(pilha*s){
-    return s->arr[(s->topo)--];
-}
-
-void iniciafila(fila*q){
-    q->comeco=q->fim=0;
-}
-
-int filavazia(fila*q){
-    return q->comeco==q->fim;
-}
-
-void pushfila(fila*q,int x){
-    q->arr[q->fim++]=x;
-}
-
-int popfila(fila* q){
-    return q->arr[q->comeco++];
-}
-
-void iniciafp(prioridade*fp){
-    fp->tamanho=0;
-}
-
-int fpvazia(prioridade*fp){
-    return fp->tamanho==0;
-}
-
-void pushfp(prioridade*fp,int x){
-    fp->arr[fp->tamanho++]=x;
-}
-
-int popfp(prioridade*fp){
-    int max=0;
-    for (int i=1;i<fp->tamanho;i++){
-        if (fp->arr[i]>fp->arr[max]){
-            max=i;
-        }
-    }
-    int val=fp->arr[max];
-    for (int i=max;i<fp->tamanho-1;i++){
-        fp->arr[i]=fp->arr[i+1];
-    }
-    fp->tamanho--;
-    return val;
 }
