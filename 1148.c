@@ -13,7 +13,7 @@ typedef struct {
 
 Grafo grafo;
 
-void dijkstra(int verticeOrigem, int verticeDestino)
+void dijkstra(int vertOrigem, int vertDestino)
 {
     int a, a0;
     int predecessores[VERTICES], fila[VERTICES];
@@ -22,8 +22,8 @@ void dijkstra(int verticeOrigem, int verticeDestino)
     memset(predecessores, -1, sizeof(predecessores));
     memset(custos, INFINITO, sizeof(custos));
     
-    fila[verticeOrigem] = verticeOrigem;
-    custos[verticeOrigem] = 0;
+    fila[vertOrigem] = vertOrigem;
+    custos[vertOrigem] = 0;
     
     while (true)
     {
@@ -48,8 +48,8 @@ void dijkstra(int verticeOrigem, int verticeDestino)
         }
     }
     
-    if (custos[verticeDestino] < INFINITO) 
-        printf("%d\n", custos[verticeDestino]);
+    if (custos[vertDestino] < INFINITO) 
+        printf("%d\n", custos[vertDestino]);
     else 
         printf("Nao e possivel entregar a carta\n");
 }
