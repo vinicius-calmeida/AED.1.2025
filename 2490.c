@@ -1,44 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define VERDADEIRO 1
-#define FALSO 0
-#define TAMANHO_MAXIMO 1100
+#define TAM_MAX 1100
 
 typedef struct Aresta {
     int origem, destino;
     double peso;
 } Aresta;
 
-int conjuntoPai[TAMANHO_MAXIMO];
-Aresta grafo[TAMANHO_MAXIMO];
+int conjuntoPai[TAM_MAX];
+Aresta grafo[TAM_MAX];
 
-int encontrarRaiz(int);
-double calcularKruskal(int, int);
-
-int compararArestas(const void *, const void *);
-
-int quantidadeAeroportos;
+int qtdAeroportos;
 double limitePeso;
 
-int main() {
-    int quantidadeVertices, quantidadeArestas, i;
-
-    while (scanf("%d %d %lf", &quantidadeVertices, &quantidadeArestas, &limitePeso), 
-           quantidadeVertices && quantidadeArestas && limitePeso) {
-        
-        for (i = 0; i < quantidadeArestas; ++i) {
-            scanf("%d %d %lf", &grafo[i].origem, &grafo[i].destino, &grafo[i].peso);
-        }
-
-        qsort(grafo, quantidadeArestas, sizeof(Aresta), compararArestas);
-        printf("%.2lf ", calcularKruskal(quantidadeArestas, quantidadeVertices));
-        printf("%d\n", quantidadeAeroportos);
-    }
-
-    return 0;
-}
 
 int compararArestas(const void *a, const void *b) {
     double diferenca = ((Aresta *)a)->peso - ((Aresta *)b)->peso;
@@ -65,7 +40,7 @@ double calcularKruskal(int totalArestas, int totalVertices) {
     for (i = 0; i <= totalVertices; ++i)
         conjuntoPai[i] = i;
 
-    quantidadeAeroportos = 0;
+    qtdAeroportos = 0;
     for (i = 0; i < totalArestas; ++i) {
         int raizOrigem = encontrarRaiz(grafo[i].origem);
         int raizDestino = encontrarRaiz(grafo[i].destino);
@@ -75,7 +50,7 @@ double calcularKruskal(int totalArestas, int totalVertices) {
 
             if (grafo[i].peso > limitePeso) {
                 custoTotal += grafo[i].peso + 2;
-                ++quantidadeAeroportos;
+                ++qtdAeroportos;
             } else {
                 custoTotal += grafo[i].peso;
             }
@@ -83,4 +58,21 @@ double calcularKruskal(int totalArestas, int totalVertices) {
     }
 
     return custoTotal;
+}
+int main() {
+    int qtdVertices, qtdArestas, i;
+
+    while (scanf("%d %d %lf", &qtdVertices, &qtdArestas, &limitePeso), 
+           qtdVertices && qtdArestas && limitePeso) {
+        
+        for (i = 0; i < qtdArestas; ++i) {
+            scanf("%d %d %lf", &grafo[i].origem, &grafo[i].destino, &grafo[i].peso);
+        }
+
+        qsort(grafo, qtdArestas, sizeof(Aresta), compararArestas);
+        printf("%.2lf ", calcularKruskal(qtdArestas, qtdVertices));
+        printf("%d\n", qtdAeroportos);
+    }
+
+    return 0;
 }
