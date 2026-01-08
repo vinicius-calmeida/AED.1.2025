@@ -4,23 +4,23 @@
 
 int main() 
 {
-	unsigned short quantidadeCasos, quantidadePessoas;
+	unsigned short qtdcasos, qtdpessoas;
 	char palavraAtual[21], palavraAnterior[21];
 	bool idiomaIngles;
 
-	scanf("%hu", &quantidadeCasos);
+	scanf("%hu", &qtdcasos);
 
-	while (quantidadeCasos--)
+	while (qtdcasos--)
 	{
-		scanf("%hu", &quantidadePessoas);
+		scanf("%hu", &qtdpessoas);
 
 		scanf(" %s", palavraAtual);
 
-		quantidadePessoas--;
+		qtdpessoas--;
 		idiomaIngles = false;
 		strcpy(palavraAnterior, palavraAtual);
 
-		while (quantidadePessoas--)
+		while (qtdpessoas--)
 		{
 			if (strcmp(palavraAtual, palavraAnterior) != 0 && idiomaIngles == false)
 				idiomaIngles = true;
