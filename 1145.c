@@ -2,7 +2,7 @@
 
 int main() {
     int X, Y;
-    scanf("%d %d", &X, &Y); // Lê os valores de X e Y
+    scanf("%d %d", &X, &Y);
 
     int count = 1; 
 
